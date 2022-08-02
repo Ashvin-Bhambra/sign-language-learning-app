@@ -90,3 +90,6 @@ margin: 7% 0;
 .user-info-row div{
     margin-top: 5%;
 }
+.answer-anchor-{
+    text-decoration: none;
+}

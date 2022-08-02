@@ -1,8 +1,10 @@
 package app.shared;
 
+import app.entity.Game;
 import app.entity.Option;
 import app.entity.Question;
 import app.entity.User;
+import app.service.GameService;
 import app.service.OptionService;
 import app.service.QuestionService;
 import app.service.UserService;
@@ -12,6 +14,7 @@ import org.springframework.security.crypto.password.PasswordEncoder;
 
 
 import javax.annotation.PostConstruct;
+import java.util.ArrayList;
 import java.util.HashMap;
 import java.util.HashSet;
 
@@ -29,6 +32,9 @@ public class InitialData {
 
     @Autowired
     private PasswordEncoder passwordEncoder;
+
+    @Autowired
+    private GameService gameService;
 
 
 
@@ -75,17 +81,37 @@ public class InitialData {
         saveOptionsFromHashSet(optionsForQuestionTwo);
         saveOptionsFromHashSet(optionsForQuestionThree);
 
-        Question questionOne  = new Question("Please click on the apple", optionsForQuestionOne, option1, "");
+        Game gameOne = new Game();
+
+        Question questionOne = new Question("Please click on the apple", optionsForQuestionOne, option1, "");
         Question questionTwo = new Question("Please click on the horse", optionsForQuestionTwo, option5, "");
         Question questionThree = new Question("Please click on the car", optionsForQuestionThree, option9, "");
+
+        ArrayList<Question> questionsForGame1 = new ArrayList<>();
+        questionsForGame1.add(questionOne);
+        questionsForGame1.add(questionTwo);
+        questionsForGame1.add(questionThree);
+
+        gameOne.setQuestionList(questionsForGame1);
+
+        gameService.saveGame(gameOne);
+
+        questionOne.setGame(gameOne);
+        questionTwo.setGame(gameOne);
+        questionThree.setGame(gameOne);
 
         questionService.saveQuestion(questionOne);
         questionService.saveQuestion(questionTwo);
         questionService.saveQuestion(questionThree);
 
+        Game gameTwo = new Game();
+        Game gameThree = new Game();
+
+        gameService.saveGame(gameTwo);
+        gameService.saveGame(gameThree);
 
 
-    User user = new User("test@gmail.com", passwordEncoder.encode("password"));
+        User user = new User("test@gmail.com", passwordEncoder.encode("password"));
 
     try{
         userRepository.save(user);

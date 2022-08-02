@@ -1,8 +1,10 @@
 package app.controller;
 
+import app.entity.Game;
 import app.entity.Option;
 import app.entity.Question;
 import app.entity.User;
+import app.service.GameService;
 import app.service.OptionService;
 import app.service.QuestionService;
 import app.service.UserService;
@@ -31,8 +33,11 @@ public class HomePageController {
     @Autowired
     UserService userService;
 
-    @RequestMapping(value = {"/", "/home", "/index"})
-    public String getHomePage(Model model) {
+    @Autowired
+    GameService gameService;
+
+
+    public String getQuestions(Model model) {
 
         Authentication authentication = SecurityContextHolder.getContext().getAuthentication();
         String currentUserName = authentication.getName();
@@ -44,6 +49,22 @@ public class HomePageController {
         model.addAttribute("currentUser", currentUserName);
         return "index";
     }
+    @RequestMapping(value = {"/", "/home", "/index"})
+    public String getHomePage(Model model){
+        Authentication authentication = SecurityContextHolder.getContext().getAuthentication();
+        String currentUserName = authentication.getName();
+
+        ArrayList<Game> games = (ArrayList<Game>) gameService.getAllGames();
+        model.addAttribute("allGames", games);
+        model.addAttribute(("currentUser", currentUserName);
+        return "game";
+
+    }
+
+
+
+
+
     @RequestMapping("/selectAnswer/{questionId}/{optionId}")
     public String acceptAnswerOption(@PathVariable("questionId") int questionId, @PathVariable("optionId") int optionId) {
 
