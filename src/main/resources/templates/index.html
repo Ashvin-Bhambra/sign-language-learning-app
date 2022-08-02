@@ -1,0 +1,51 @@
+<!DOCTYPE html>
+<html lang="en" xmlns:th="http://www.w3.org/1999/xhtml">
+<head th:replace="fragments/header :: head">
+</head>
+<body>
+
+<div class="container">
+
+    <div class="column user-info-column">
+        <div class="row user-info-row">
+            <img th:src="@{/images/user.png}">
+            <div th:text="${currentUser}">
+            </div>
+        </div>
+
+
+        <div class="row user-info-row">
+            <img th:src="@{/images/coin.png}">
+            <div th:text="'Max score: 50'">
+            </div>
+        </div>
+
+
+        <div class="row user-info-row">
+            <img th:src="@{/images/danger.png}">
+            <div th:text="'Streaks: 5 days in a row!'">
+            </div>
+        </div>
+    </div>
+    <div th:each="question : ${allQuestions}">
+        <div class="question" th:text="${question.questionText}"></div>
+
+
+        <div class="word-images">
+
+            <div class="row images-row">
+                <div class="answer-option" th:each="option : ${question.answerOptions}">
+                    <a th:href="@{/selectAnswer/{questionId}/{optionId}(questionId = ${question.id}, optionId = ${option.id})}">
+                        <img th:src="${option.imagePath}">
+                        <div class="answer-text" th:text="${option.wordFrench}">
+                        </div>
+                    </a>
+                </div>
+
+            </div>
+        </div>
+    </div>
+</div>
+
+</body>
+</html>

@@ -1,0 +1,15 @@
+- Question
+    Question text
+    HashSet of Options
+    Right Option
+    Video LINK
+
+ - Option
+    Word EN
+    Word FR
+    Image
+
+
+<iframe>
+    th:value="${video.link}"
+</iframe>
