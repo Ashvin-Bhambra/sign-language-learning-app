@@ -14,13 +14,22 @@ public class Game {
     @Column(name = "game_id")
     private int id;
 
+    private String level;
+
 
     @OneToMany(mappedBy="game")
     List<Question> questionList;
 
-    public Game(){
+    public Game(String level){
+        this.questionList = new ArrayList<>();
+        this.level=level;
+    }
+
+    public Game() {
+        this.level = "Easy";
         this.questionList = new ArrayList<>();
     }
+
 
     public void setQuestionList(ArrayList<Question> questions){
         this.questionList = questions;
@@ -29,4 +38,15 @@ public class Game {
         return questionList;
     }
 
+    public String getLevel() {
+        return level;
+    }
+
+    public void setLevel(String level) {
+        this.level = level;
+    }
+
+    public int getId(){
+        return id;
+    }
 }

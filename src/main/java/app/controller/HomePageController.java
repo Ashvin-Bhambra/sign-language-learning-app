@@ -17,8 +17,7 @@ import org.springframework.web.bind.annotation.PathVariable;
 import org.springframework.web.bind.annotation.RequestMapping;
 
 import java.util.ArrayList;
-
-
+import java.util.List;
 
 
 @Controller
@@ -37,18 +36,24 @@ public class HomePageController {
     GameService gameService;
 
 
-    public String getQuestions(Model model) {
-
+    @RequestMapping("/showQuestionsForGame/{gameId}")
+    public String getQuestionsForGame(@PathVariable("gameId") int gameId, Model model){
         Authentication authentication = SecurityContextHolder.getContext().getAuthentication();
         String currentUserName = authentication.getName();
 
-        ArrayList<Question> questions = (ArrayList<Question>) questionService.getAllQuestions();
+        Game game = gameService.getGameByGameId(gameId);
+
+        List<Question> questions =  game.getQuestionList();
+
         System.out.println("----- QUESTIONS: ------");
         System.out.println(questions);
         model.addAttribute("allQuestions", questions);
         model.addAttribute("currentUser", currentUserName);
         return "index";
+
     }
+
+
     @RequestMapping(value = {"/", "/home", "/index"})
     public String getHomePage(Model model){
         Authentication authentication = SecurityContextHolder.getContext().getAuthentication();
@@ -56,8 +61,8 @@ public class HomePageController {
 
         ArrayList<Game> games = (ArrayList<Game>) gameService.getAllGames();
         model.addAttribute("allGames", games);
-        model.addAttribute(("currentUser", currentUserName);
-        return "game";
+        model.addAttribute("currentUser", currentUserName);
+        return "games";
 
     }
 
@@ -84,6 +89,8 @@ public class HomePageController {
            }
 
         return "index";
+
+
 
 
     }

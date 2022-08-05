@@ -90,6 +90,38 @@ margin: 7% 0;
 .user-info-row div{
     margin-top: 5%;
 }
+
 .answer-anchor-{
     text-decoration: none;
+}
+
+.level {
+    text-decoration: none;
+    position: absolute;
+    top: 0;
+    width: 100%;
+    left: 0;
+    height: 100%;
+    top: 5px;
+}
+
+
+.game{
+    width: 200px;
+    padding: 20px 20px 20px 20px;
+    margin: 15px auto;
+    border: 2px solid #f68a09;
+    position: relative;
+}
+
+.game:hover{
+    cursor: pointer;
+    background-color: aliceblue;
+}
+
+.games{
+    display: flex;
+    flex-direction:  column;
+    justify-content: space-around;
+    height: 350px;
 }

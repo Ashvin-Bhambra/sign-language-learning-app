@@ -44,10 +44,10 @@ public class InitialData {
     @PostConstruct
     public void initializeDatabase(){
 
-        Option option1 = new Option("Apple", "Pomme", "images/apple.png");
-        Option option2 = new Option("Orange", "Orange", "images/orange.png");
-        Option option3 = new Option("Banana", "Banane", "images/banana.png");
-        Option option4 = new Option("Cherry", "Cerise", "images/cherries.png");
+        Option option1 = new Option("Apple", "Pomme", "/images/apple.png");
+        Option option2 = new Option("Orange", "Orange", "/images/orange.png");
+        Option option3 = new Option("Banana", "Banane", "/images/banana.png");
+        Option option4 = new Option("Cherry", "Cerise", "/images/cherries.png");
 
         HashSet<Option> optionsForQuestionOne = new HashSet<>();
         optionsForQuestionOne.add(option1);
@@ -55,10 +55,10 @@ public class InitialData {
         optionsForQuestionOne.add(option3);
         optionsForQuestionOne.add(option4);
 
-        Option option5 = new Option("Horse", "Cheval", "images/horse.png");
-        Option option6 = new Option("Cat", "Chat", "images/cat.png");
-        Option option7 = new Option("Dog", "Chien", "images/dog.png");
-        Option option8 = new Option("Pig", "Cochon", "images/pig.png");
+        Option option5 = new Option("Horse", "Cheval", "/images/horse.png");
+        Option option6 = new Option("Cat", "Chat", "/images/cat.png");
+        Option option7 = new Option("Dog", "Chien", "/images/dog.png");
+        Option option8 = new Option("Pig", "Cochon", "/images/pig.png");
 
         HashSet<Option> optionsForQuestionTwo = new HashSet<>();
         optionsForQuestionTwo.add(option5);
@@ -66,10 +66,10 @@ public class InitialData {
         optionsForQuestionTwo.add(option7);
         optionsForQuestionTwo.add(option8);
 
-        Option option9 = new Option("Car", "Auto", "images/car.png");
-        Option option10 = new Option("Bike", "Bicyclette", "images/bicycle.png");
-        Option option11 = new Option("Boat", "Bateau", "images/canoe.png");
-        Option option12 = new Option("Plane", "Avion", "images/airplane.png");
+        Option option9 = new Option("Car", "Auto", "/images/car.png");
+        Option option10 = new Option("Bike", "Bicyclette", "/images/bicycle.png");
+        Option option11 = new Option("Boat", "Bateau", "/images/canoe.png");
+        Option option12 = new Option("Plane", "Avion", "/images/airplane.png");
 
         HashSet<Option> optionsForQuestionThree = new HashSet<>();
         optionsForQuestionThree.add(option9);
@@ -81,7 +81,7 @@ public class InitialData {
         saveOptionsFromHashSet(optionsForQuestionTwo);
         saveOptionsFromHashSet(optionsForQuestionThree);
 
-        Game gameOne = new Game();
+        Game gameOne = new Game("Easy");
 
         Question questionOne = new Question("Please click on the apple", optionsForQuestionOne, option1, "");
         Question questionTwo = new Question("Please click on the horse", optionsForQuestionTwo, option5, "");
@@ -104,8 +104,8 @@ public class InitialData {
         questionService.saveQuestion(questionTwo);
         questionService.saveQuestion(questionThree);
 
-        Game gameTwo = new Game();
-        Game gameThree = new Game();
+        Game gameTwo = new Game("Intermediate");
+        Game gameThree = new Game("Advanced");
 
         gameService.saveGame(gameTwo);
         gameService.saveGame(gameThree);

@@ -14,6 +14,10 @@ public class GameService {
     @Autowired
     private GameRepository gameRepository;
 
+    public Game getGameByGameId(int id){
+        return gameRepository.findById(id).get();
+    }
+
     public void saveGame(Game game){
         this.gameRepository.save(game);
     }

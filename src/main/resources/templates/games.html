@@ -29,6 +29,12 @@
     </div>
 
     <div class ="games">
+        <div th:each="game : ${allGames}" class="game">
+            <a th:href="@{/showQuestionsForGame/{gameId}/(gameId = ${game.id})}" class = "level" th:text="${game.level}">
+
+            </a>
+
+        </div>
 
     </div>
 
