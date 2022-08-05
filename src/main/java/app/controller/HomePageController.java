@@ -45,10 +45,9 @@ public class HomePageController {
 
         List<Question> questions =  game.getQuestionList();
 
-        System.out.println("----- QUESTIONS: ------");
-        System.out.println(questions);
         model.addAttribute("allQuestions", questions);
         model.addAttribute("currentUser", currentUserName);
+        model.addAttribute("errorMsg", null);
         return "index";
 
     }
@@ -71,7 +70,7 @@ public class HomePageController {
 
 
     @RequestMapping("/selectAnswer/{questionId}/{optionId}")
-    public String acceptAnswerOption(@PathVariable("questionId") int questionId, @PathVariable("optionId") int optionId) {
+    public String acceptAnswerOption(@PathVariable("questionId") int questionId, @PathVariable("optionId") int optionId, Model model) {
 
         Authentication authentication = SecurityContextHolder.getContext().getAuthentication();
         String currentUserName = authentication.getName();
@@ -81,19 +80,38 @@ public class HomePageController {
             Question question = questionService .findQuestionById(questionId);
            Option selectedOption = optionService.findOptionById(optionId);
 
-           if(question.getCorrectOption().equals(selectedOption)){
+           if(question.getCorrectOption().equals(selectedOption)) {
                int currentScore = user.getCurrentGameScore();
-               currentScore = currentScore +1;
+               currentScore = currentScore + 1;
                user.setCurrentGameScore(currentScore);
                userService.save(user);
+               question.setAnswered(true);
+               model.addAttribute("errorMsg", null);
+           }
+           else {
+               model.addAttribute("errorMsg", "Wrong answer, try again!");
            }
 
-        return "index";
+               Game game = gameService.getGameByGameId(question.getGame().getId());
 
+               List<Question> questions =  game.getQuestionList();
+               List<Question> unansweredQuestions = new ArrayList<>();
+
+               for(Question singleQuestion : questions){
+                   if(singleQuestion.isAnswered() == false){
+                       unansweredQuestions.add(singleQuestion);
+                   }
+               }
+
+
+               model.addAttribute("allQuestions", unansweredQuestions);
+               model.addAttribute("currentUser", currentUserName);
+
+               return "index";
+
+           }
 
 
 
     }
 
-
-}

@@ -125,3 +125,12 @@ margin: 7% 0;
     justify-content: space-around;
     height: 350px;
 }
+
+.errorMsg{
+    width: 50%;
+    margin: 0 auto;
+    background-color: red;
+    color: white;
+    font-size: 20px;
+    border: 2px solid white;
+}

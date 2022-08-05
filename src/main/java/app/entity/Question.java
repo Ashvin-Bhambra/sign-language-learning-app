@@ -22,6 +22,8 @@ public class Question {
 
     private String questionText;
 
+    private boolean answered;
+
     @ManyToOne
     @JoinColumn(name ="game_id", nullable=false)
     private Game game;
@@ -31,9 +33,11 @@ public class Question {
         this.answerOptions = answerOptions;
         this.correctOption = correctOption;
         this.videoPath = videoPath;
+        this.answered = false;
     }
 
     public Question(){
+        this.answered = true;
 
     }
 
@@ -82,6 +86,14 @@ public class Question {
     }
     public void setGame(Game game){
         this.game = game;
+    }
+
+    public boolean isAnswered() {
+        return answered;
+    }
+
+    public void setAnswered(boolean answered) {
+        this.answered = answered;
     }
 
     @Override
