@@ -45,9 +45,15 @@ public class HomePageController {
 
         List<Question> questions =  game.getQuestionList();
 
+        for(Question question : game.getQuestionList()){
+            question.setAnswered(false);
+            questionService.saveQuestion(question);
+        }
+
         model.addAttribute("allQuestions", questions);
         model.addAttribute("currentUser", currentUserName);
         model.addAttribute("errorMsg", null);
+        model.addAttribute("gameComplete", false);
         return "index";
 
     }
@@ -86,6 +92,7 @@ public class HomePageController {
                user.setCurrentGameScore(currentScore);
                userService.save(user);
                question.setAnswered(true);
+               questionService.saveQuestion((question));
                model.addAttribute("errorMsg", null);
            }
            else {
@@ -97,10 +104,19 @@ public class HomePageController {
                List<Question> questions =  game.getQuestionList();
                List<Question> unansweredQuestions = new ArrayList<>();
 
-               for(Question singleQuestion : questions){
-                   if(singleQuestion.isAnswered() == false){
-                       unansweredQuestions.add(singleQuestion);
+               for(Question singleQuestion : game.getQuestionList()){
+                 if (singleQuestion.isAnswered() == false){
+                     unansweredQuestions.add(singleQuestion);
+
                    }
+               }
+
+               if(unansweredQuestions.size() == 0){
+                   model.addAttribute("gameComplete", true);
+               }
+               else{
+                   model.addAttribute("gameComplete", false);
+
                }
 
 
