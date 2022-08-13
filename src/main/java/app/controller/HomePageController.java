@@ -54,6 +54,10 @@ public class HomePageController {
         model.addAttribute("currentUser", currentUserName);
         model.addAttribute("errorMsg", null);
         model.addAttribute("gameComplete", false);
+        if(game.getLevel().equalsIgnoreCase("Intermediate")){
+            return "game_two";
+        }
+
         return "index";
 
     }
@@ -93,9 +97,12 @@ public class HomePageController {
                userService.save(user);
                question.setAnswered(true);
                questionService.saveQuestion((question));
+               model.addAttribute("showVideo", true);
                model.addAttribute("errorMsg", null);
            }
            else {
+               model.addAttribute("showVideo", false);
+
                model.addAttribute("errorMsg", "Wrong answer, try again!");
            }
 

@@ -35,23 +35,26 @@
     </div>
 
     <div th:each="question : ${allQuestions}">
-        <div class="question" th:text="${question.questionText}"></div>
+        <div class="question"> From options below select the applicable word based on the video below: </div>
 
         <div class="word-images">
             <div class="row images-row">
+
+                <video controls width="400" height="400">
+                    <source th:src="${question.videoPath}"/>
+                </video>
+
+
                 <div class="answer-option" th:each="option : ${question.answerOptions}">
                     <a class="answer-anchor"
                        th:href="@{/selectAnswer/{questionId}/{optionId}(questionId = ${question.id}, optionId = ${option.id})}">
                         <img th:src="${option.imagePath}">
                         <div class="answer-text" th:text="${option.wordFrench}"></div>
                     </a>
+
+
                 </div>
 
-                <div th:if="${showVideo == true}">
-                <video controls width="400" height="400">
-                    <source th:src="${question.videoPath}"/>
-                </video>
-            </div>
 
 
         </div>

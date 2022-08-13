@@ -2,6 +2,7 @@ package app.entity;
 
 import javax.persistence.*;
 import java.util.HashSet;
+import java.util.List;
 import java.util.Set;
 
 @Entity
@@ -27,6 +28,8 @@ public class Question {
     @ManyToOne
     @JoinColumn(name ="game_id", nullable=false)
     private Game game;
+    @ManyToMany(mappedBy = "questionList", cascade = CascadeType.ALL)
+    private List<Game> gameList;
 
     public Question(String questionText, HashSet<Option> answerOptions, Option correctOption, String videoPath) {
         this.questionText = questionText;
@@ -94,6 +97,13 @@ public class Question {
 
     public void setAnswered(boolean answered) {
         this.answered = answered;
+    }
+    public List<Game> getGameList() {
+        return gameList;
+    }
+
+    public void setGameList(List<Game> gameList) {
+        this.gameList = gameList;
     }
 
     @Override

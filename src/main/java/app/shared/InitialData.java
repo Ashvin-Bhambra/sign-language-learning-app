@@ -83,9 +83,9 @@ public class InitialData {
 
         Game gameOne = new Game("Easy");
 
-        Question questionOne = new Question("Please click on the apple", optionsForQuestionOne, option1, "");
-        Question questionTwo = new Question("Please click on the horse", optionsForQuestionTwo, option5, "");
-        Question questionThree = new Question("Please click on the car", optionsForQuestionThree, option9, "");
+        Question questionOne = new Question("Please click on the apple", optionsForQuestionOne, option1, "/videos/IMG_4226.m4v");
+        Question questionTwo = new Question("Please click on the horse", optionsForQuestionTwo, option5, "/videos/IMG_4226.m4v");
+        Question questionThree = new Question("Please click on the car", optionsForQuestionThree, option9, "/videos/IMG_4226.m4v");
 
         ArrayList<Question> questionsForGame1 = new ArrayList<>();
         questionsForGame1.add(questionOne);
@@ -93,6 +93,9 @@ public class InitialData {
         questionsForGame1.add(questionThree);
 
         gameOne.setQuestionList(questionsForGame1);
+        questionService.saveQuestion(questionOne);
+        questionService.saveQuestion(questionTwo);
+        questionService.saveQuestion(questionThree);
 
         gameService.saveGame(gameOne);
 
@@ -100,16 +103,14 @@ public class InitialData {
         questionTwo.setGame(gameOne);
         questionThree.setGame(gameOne);
 
-        questionService.saveQuestion(questionOne);
-        questionService.saveQuestion(questionTwo);
-        questionService.saveQuestion(questionThree);
-
         Game gameTwo = new Game("Intermediate");
+        gameTwo.setQuestionList(questionsForGame1);
+        gameService.saveGame(gameTwo);
+
         Game gameThree = new Game("Advanced");
 
         gameService.saveGame(gameTwo);
         gameService.saveGame(gameThree);
-
 
         User user = new User("test@gmail.com", passwordEncoder.encode("password"));
 

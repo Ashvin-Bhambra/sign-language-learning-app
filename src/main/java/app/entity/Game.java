@@ -17,7 +17,10 @@ public class Game {
     private String level;
 
 
-    @OneToMany(mappedBy="game")
+    @ManyToMany(targetEntity = Question.class,
+            cascade = CascadeType.MERGE)
+    @JoinTable(name = "game_questions", joinColumns = { @JoinColumn(name = "game_id") },
+            inverseJoinColumns = { @JoinColumn(name = "question_id") })
     List<Question> questionList;
 
     public Game(String level){
