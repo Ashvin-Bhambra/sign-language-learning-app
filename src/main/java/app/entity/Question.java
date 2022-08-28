@@ -26,7 +26,7 @@ public class Question {
     private boolean answered;
 
     @ManyToOne
-    @JoinColumn(name ="game_id", nullable=false)
+    @JoinColumn(name ="game_id")
     private Game game;
     @ManyToMany(mappedBy = "questionList", cascade = CascadeType.ALL)
     private List<Game> gameList;

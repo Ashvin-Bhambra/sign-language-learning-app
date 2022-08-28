@@ -57,12 +57,13 @@ public class HomePageController {
         if(game.getLevel().equalsIgnoreCase("Intermediate")){
             return "game_two";
         }
+        if(game.getLevel().equalsIgnoreCase("Advanced")){
+            return "game_three";
+        }
 
         return "index";
 
     }
-
-
     @RequestMapping(value = {"/", "/home", "/index"})
     public String getHomePage(Model model){
         Authentication authentication = SecurityContextHolder.getContext().getAuthentication();
@@ -75,6 +76,58 @@ public class HomePageController {
 
     }
 
+    private void processQuestionAnswers(int questionId, int optionId, Model model){
+        Authentication authentication = SecurityContextHolder.getContext().getAuthentication();
+        String currentUserName = authentication.getName();
+
+        User user = userService.loadUserByUsername(currentUserName);
+
+        Question question = questionService .findQuestionById(questionId);
+        Option selectedOption = optionService.findOptionById(optionId);
+
+        if(question.getCorrectOption().equals(selectedOption)) {
+            int currentScore = user.getCurrentGameScore();
+            currentScore = currentScore + 1;
+            user.setCurrentGameScore(currentScore);
+            userService.save(user);
+            question.setAnswered(true);
+            questionService.saveQuestion((question));
+            model.addAttribute("showVideo", true);
+            model.addAttribute("errorMsg", null);
+        }
+        else {
+            model.addAttribute("showVideo", false);
+
+            model.addAttribute("errorMsg", "Wrong answer, try again!");
+        }
+
+        Game game = gameService.getGameByGameId(question.getGame().getId());
+
+        List<Question> questions =  game.getQuestionList();
+        List<Question> unansweredQuestions = new ArrayList<>();
+
+        for(Question singleQuestion : game.getQuestionList()){
+            if (singleQuestion.isAnswered() == false){
+                unansweredQuestions.add(singleQuestion);
+
+            }
+        }
+
+        if(unansweredQuestions.size() == 0){
+            model.addAttribute("gameComplete", true);
+        }
+        else{
+            model.addAttribute("gameComplete", false);
+
+        }
+
+
+        model.addAttribute("allQuestions", unansweredQuestions);
+        model.addAttribute("currentUser", currentUserName);
+
+
+
+    }
 
 
 
@@ -130,9 +183,27 @@ public class HomePageController {
                model.addAttribute("allQuestions", unansweredQuestions);
                model.addAttribute("currentUser", currentUserName);
 
+               processQuestionAnswers(questionId, optionId, model);
+
                return "index";
 
            }
+           @RequestMapping("/selectAnswerForGameTwo/{questionId}/{optionId}")
+            public String selectAnswerForGameTwo(@PathVariable("questionId") int questionId,
+                                                 @PathVariable("optionId") int optionId,
+                                                 Model model){
+            processQuestionAnswers(questionId, optionId,model);
+            return "game_two";
+           }
+
+    @RequestMapping("/selectAnswerForGameThree/{questionId}/{optionId}")
+    public String selectAnswerForGameThree(@PathVariable("questionId") int questionId,
+                                         @PathVariable("optionId") int optionId,
+                                         Model model){
+        processQuestionAnswers(questionId, optionId,model);
+        return "game_three";
+    }
+
 
 
 

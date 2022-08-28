@@ -11,7 +11,7 @@ import app.service.UserService;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.context.annotation.Configuration;
 import org.springframework.security.crypto.password.PasswordEncoder;
-
+import org.springframework.stereotype.Service;
 
 import javax.annotation.PostConstruct;
 import java.util.ArrayList;
@@ -36,13 +36,8 @@ public class InitialData {
     @Autowired
     private GameService gameService;
 
-
-
-
-
-
     @PostConstruct
-    public void initializeDatabase(){
+    public void initializeDatabase() {
 
         Option option1 = new Option("Apple", "Pomme", "/images/apple.png");
         Option option2 = new Option("Orange", "Orange", "/images/orange.png");
@@ -83,9 +78,9 @@ public class InitialData {
 
         Game gameOne = new Game("Easy");
 
-        Question questionOne = new Question("Please click on the apple", optionsForQuestionOne, option1, "/videos/IMG_4226.m4v");
-        Question questionTwo = new Question("Please click on the horse", optionsForQuestionTwo, option5, "/videos/IMG_4226.m4v");
-        Question questionThree = new Question("Please click on the car", optionsForQuestionThree, option9, "/videos/IMG_4226.m4v");
+        Question questionOne = new Question("Please click on the apple", optionsForQuestionOne, option1, "/videos/APPLE.mov");
+        Question questionTwo = new Question("Please click on the horse", optionsForQuestionTwo, option5, "/videos/HORSE.mov");
+        Question questionThree = new Question("Please click on the car", optionsForQuestionThree, option9, "/videos/CAR.mov");
 
         ArrayList<Question> questionsForGame1 = new ArrayList<>();
         questionsForGame1.add(questionOne);
@@ -107,22 +102,50 @@ public class InitialData {
         gameTwo.setQuestionList(questionsForGame1);
         gameService.saveGame(gameTwo);
 
+        ////////////////////////////////////////////////////////////////////////////////////////////////
+
         Game gameThree = new Game("Advanced");
 
+        HashSet<Option> optionsForGameThreeQuesitonOne = new HashSet<>();
+
+        Option option1ForGame3 = new Option("I ate an apple", "J'ai mangé une pomme", "/images/apple.png");
+        Option option2ForGame3 = new Option("I bought an apple", "J'ai acheté une pomme", "/images/apple.png");
+        Option option3ForGame3 = new Option("I like apples", "J'aime les pommes", "/images/apple.png");
+
+        Question questionOneGameThree = new Question("Pick a sentence based on the video", optionsForGameThreeQuesitonOne, option1ForGame3, "/videos/APPLE.mov");
+        Question questionTwoGameThree = new Question("Pick a sentence based on the video", optionsForGameThreeQuesitonOne, option1ForGame3, "/videos/APPLE.mov");
+        Question questionThreeGameThree = new Question("Pick a sentence based on the video", optionsForGameThreeQuesitonOne, option1ForGame3, "/videos/APPLE.mov");
+
+        optionsForGameThreeQuesitonOne.add(option1ForGame3);
+        optionsForGameThreeQuesitonOne.add(option2ForGame3);
+        optionsForGameThreeQuesitonOne.add(option3ForGame3);
+        saveOptionsFromHashSet(optionsForGameThreeQuesitonOne);
+
+        ArrayList<Question> questionForGameThree = new ArrayList<>();
+        questionForGameThree.add(questionOneGameThree);
+        questionForGameThree.add(questionTwoGameThree);
+        questionForGameThree.add(questionThreeGameThree);
+
+        gameThree.setQuestionList(questionForGameThree);
+
         gameService.saveGame(gameTwo);
+        questionService.saveQuestion(questionOneGameThree);
+        questionService.saveQuestion(questionTwoGameThree);
+        questionService.saveQuestion(questionThreeGameThree);
         gameService.saveGame(gameThree);
 
-        User user = new User("test@gmail.com", passwordEncoder.encode("password"));
 
-    try{
-        userRepository.save(user);
-    }
-    catch(Exception ex){
+        User user = new User("test@gmail.com", passwordEncoder.encode("pass"));
+
+        try {
+            userRepository.save(user);
+        } catch (Exception ex) {
+        }
 
     }
-}
-    private void saveOptionsFromHashSet(HashSet<Option> options){
-        for(Option option : options){
+
+    private void saveOptionsFromHashSet(HashSet<Option> options) {
+        for (Option option : options) {
             optionService.saveOption(option);
         }
     }
