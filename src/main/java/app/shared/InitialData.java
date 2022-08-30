@@ -107,19 +107,46 @@ public class InitialData {
         Game gameThree = new Game("Advanced");
 
         HashSet<Option> optionsForGameThreeQuesitonOne = new HashSet<>();
+        HashSet<Option> optionsForGameThreeQuesitonTwo = new HashSet<>();
+        HashSet<Option> optionsForGameThreeQuesitonThree = new HashSet<>();
+
+
 
         Option option1ForGame3 = new Option("I ate an apple", "J'ai mangé une pomme", "/images/apple.png");
         Option option2ForGame3 = new Option("I bought an apple", "J'ai acheté une pomme", "/images/apple.png");
         Option option3ForGame3 = new Option("I like apples", "J'aime les pommes", "/images/apple.png");
 
+        Option option4ForGame3 = new Option("I ride a horse", "Je monte à cheval", "/images/apple.png");
+        Option option5ForGame3 = new Option("I eat a horse", "Je mange un cheval", "/images/apple.png");
+        Option option6ForGame3 = new Option("I love horses", "J'aime les chevaux", "/images/apple.png");
+
+        Option option7ForGame3 = new Option("I drive a car", "Je conduis une voiture", "/images/apple.png");
+        Option option8ForGame3 = new Option("I stole a car", "J'ai volé une voiture", "/images/apple.png");
+        Option option9ForGame3 = new Option("I damaged a car", "J'ai endommagé une voiture", "/images/apple.png");
+
+
+
         Question questionOneGameThree = new Question("Pick a sentence based on the video", optionsForGameThreeQuesitonOne, option1ForGame3, "/videos/APPLE.mov");
-        Question questionTwoGameThree = new Question("Pick a sentence based on the video", optionsForGameThreeQuesitonOne, option1ForGame3, "/videos/APPLE.mov");
-        Question questionThreeGameThree = new Question("Pick a sentence based on the video", optionsForGameThreeQuesitonOne, option1ForGame3, "/videos/APPLE.mov");
+        Question questionTwoGameThree = new Question("Pick a sentence based on the video", optionsForGameThreeQuesitonTwo, option4ForGame3, "/videos/APPLE.mov");
+        Question questionThreeGameThree = new Question("Pick a sentence based on the video", optionsForGameThreeQuesitonThree, option7ForGame3, "/videos/APPLE.mov");
+
+
 
         optionsForGameThreeQuesitonOne.add(option1ForGame3);
         optionsForGameThreeQuesitonOne.add(option2ForGame3);
         optionsForGameThreeQuesitonOne.add(option3ForGame3);
         saveOptionsFromHashSet(optionsForGameThreeQuesitonOne);
+
+        optionsForGameThreeQuesitonTwo.add(option4ForGame3);
+        optionsForGameThreeQuesitonTwo.add(option5ForGame3);
+        optionsForGameThreeQuesitonTwo.add(option6ForGame3);
+        saveOptionsFromHashSet(optionsForGameThreeQuesitonTwo);
+
+        optionsForGameThreeQuesitonThree.add(option7ForGame3);
+        optionsForGameThreeQuesitonThree.add(option8ForGame3);
+        optionsForGameThreeQuesitonThree.add(option9ForGame3);
+        saveOptionsFromHashSet(optionsForGameThreeQuesitonThree);
+
 
         ArrayList<Question> questionForGameThree = new ArrayList<>();
         questionForGameThree.add(questionOneGameThree);
@@ -128,11 +155,21 @@ public class InitialData {
 
         gameThree.setQuestionList(questionForGameThree);
 
-        gameService.saveGame(gameTwo);
         questionService.saveQuestion(questionOneGameThree);
         questionService.saveQuestion(questionTwoGameThree);
         questionService.saveQuestion(questionThreeGameThree);
+
+        questionOneGameThree.setGame(gameThree);
+        questionTwoGameThree.setGame(gameThree);
+        questionThreeGameThree.setGame(gameThree);
+
+
+        gameService.saveGame(gameTwo);
         gameService.saveGame(gameThree);
+
+        questionService.saveQuestion(questionOneGameThree);
+        questionService.saveQuestion(questionTwoGameThree);
+        questionService.saveQuestion(questionThreeGameThree);
 
 
         User user = new User("test@gmail.com", passwordEncoder.encode("pass"));

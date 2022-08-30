@@ -88,7 +88,7 @@ margin: 7% 0;
     margin-top: 5%;
 }
 
-.answer-anchor-{
+.answer-anchor{
     text-decoration: none;
 }
 
@@ -167,4 +167,16 @@ margin: 7% 0;
     margin: 2% auto;
 }
 
+.video-container{
+    width: 600px;
+    background-color: black;
+    text-align: center;
+    padding: 100px;
+}
+
+.text{
+    color: white;
+    font-size: 22px;
+    font-style: italic;
+}
 
