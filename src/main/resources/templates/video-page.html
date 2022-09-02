@@ -1,0 +1,37 @@
+<!DOCTYPE html>
+<html lang="en" xmlns:th="http://www.w3.org/1999/xhtml">
+<head th:replace="fragments/header :: head">
+</head>
+<body>
+
+<div class="container">
+
+    <div class="row user-stats-row">
+        <div class="row user-info-row">
+            <img th:src="@{/images/user.png}">
+            <div th:text="${currentUser}"></div>
+        </div>
+
+        <div class="row user-info-row">
+            <img th:src="@{/images/coin.png}">
+            <div th:text="'Max score: 50'"></div>
+        </div>
+
+        <div class="row user-info-row">
+            <img th:src="@{/images/danger.png}">
+            <div th:text="'Streaks: 5 days in a row!'"></div>
+        </div>
+
+    </div>
+<div class="video-wrap">
+    <video controls width="400" height="400">
+        <source th:src="${question.videoPath}"/>
+    </video>
+</div>
+
+    <a class="resume-button" th:href="@{/resumeGame/{questionId}(questionId = ${question.id})}">Continue</a>
+
+</div>
+
+</body>
+</html>

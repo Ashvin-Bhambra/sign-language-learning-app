@@ -21,7 +21,7 @@ import java.util.List;
 
 
 @Controller
-public class HomePageController {
+public class GameController {
 
     @Autowired
     QuestionService questionService;
@@ -37,15 +37,15 @@ public class HomePageController {
 
 
     @RequestMapping("/showQuestionsForGame/{gameId}")
-    public String getQuestionsForGame(@PathVariable("gameId") int gameId, Model model){
+    public String getQuestionsForGame(@PathVariable("gameId") int gameId, Model model) {
         Authentication authentication = SecurityContextHolder.getContext().getAuthentication();
         String currentUserName = authentication.getName();
 
         Game game = gameService.getGameByGameId(gameId);
 
-        List<Question> questions =  game.getQuestionList();
+        List<Question> questions = game.getQuestionList();
 
-        for(Question question : game.getQuestionList()){
+        for (Question question : game.getQuestionList()) {
             question.setAnswered(false);
             questionService.saveQuestion(question);
         }
@@ -54,18 +54,19 @@ public class HomePageController {
         model.addAttribute("currentUser", currentUserName);
         model.addAttribute("errorMsg", null);
         model.addAttribute("gameComplete", false);
-        if(game.getLevel().equalsIgnoreCase("Intermediate")){
+        if (game.getLevel().equalsIgnoreCase("Intermediate")) {
             return "game_two";
         }
-        if(game.getLevel().equalsIgnoreCase("Advanced")){
+        if (game.getLevel().equalsIgnoreCase("Advanced")) {
             return "game_three";
         }
 
         return "index";
 
     }
+
     @RequestMapping(value = {"/", "/home", "/index"})
-    public String getHomePage(Model model){
+    public String getHomePage(Model model) {
         Authentication authentication = SecurityContextHolder.getContext().getAuthentication();
         String currentUserName = authentication.getName();
 
@@ -76,16 +77,16 @@ public class HomePageController {
 
     }
 
-    private void processQuestionAnswers(int questionId, int optionId, Model model){
+    private void processQuestionAnswers(int questionId, int optionId, Model model) {
         Authentication authentication = SecurityContextHolder.getContext().getAuthentication();
         String currentUserName = authentication.getName();
 
         User user = userService.loadUserByUsername(currentUserName);
 
-        Question question = questionService .findQuestionById(questionId);
+        Question question = questionService.findQuestionById(questionId);
         Option selectedOption = optionService.findOptionById(optionId);
 
-        if(question.getCorrectOption().equals(selectedOption)) {
+        if (question.getCorrectOption().equals(selectedOption)) {
             int currentScore = user.getCurrentGameScore();
             currentScore = currentScore + 1;
             user.setCurrentGameScore(currentScore);
@@ -94,29 +95,39 @@ public class HomePageController {
             questionService.saveQuestion((question));
             model.addAttribute("showVideo", true);
             model.addAttribute("errorMsg", null);
-        }
-        else {
+        } else {
             model.addAttribute("showVideo", false);
 
             model.addAttribute("errorMsg", "Wrong answer, try again!");
         }
 
+
+    }
+
+    @RequestMapping("/resumeGame/{questionId}")
+    public String resumeGame(Model model, @PathVariable("questionId") int questionId) {
+
+        Question question = questionService.findQuestionById(questionId);
+
+        Authentication authentication = SecurityContextHolder.getContext().getAuthentication();
+        String currentUserName = authentication.getName();
+
+
         Game game = gameService.getGameByGameId(question.getGame().getId());
 
-        List<Question> questions =  game.getQuestionList();
+        List<Question> questions = game.getQuestionList();
         List<Question> unansweredQuestions = new ArrayList<>();
 
-        for(Question singleQuestion : game.getQuestionList()){
-            if (singleQuestion.isAnswered() == false){
+        for (Question singleQuestion : game.getQuestionList()) {
+            if (singleQuestion.isAnswered() == false) {
                 unansweredQuestions.add(singleQuestion);
 
             }
         }
 
-        if(unansweredQuestions.size() == 0){
+        if (unansweredQuestions.size() == 0) {
             model.addAttribute("gameComplete", true);
-        }
-        else{
+        } else {
             model.addAttribute("gameComplete", false);
 
         }
@@ -125,7 +136,7 @@ public class HomePageController {
         model.addAttribute("allQuestions", unansweredQuestions);
         model.addAttribute("currentUser", currentUserName);
 
-
+        return "index";
 
     }
 
@@ -134,58 +145,17 @@ public class HomePageController {
 
     @RequestMapping("/selectAnswer/{questionId}/{optionId}")
     public String acceptAnswerOption(@PathVariable("questionId") int questionId, @PathVariable("optionId") int optionId, Model model) {
-
-        Authentication authentication = SecurityContextHolder.getContext().getAuthentication();
-        String currentUserName = authentication.getName();
-
-        User user = userService.loadUserByUsername(currentUserName);
-
-            Question question = questionService .findQuestionById(questionId);
-           Option selectedOption = optionService.findOptionById(optionId);
-
-           if(question.getCorrectOption().equals(selectedOption)) {
-               int currentScore = user.getCurrentGameScore();
-               currentScore = currentScore + 1;
-               user.setCurrentGameScore(currentScore);
-               userService.save(user);
-               question.setAnswered(true);
-               questionService.saveQuestion((question));
-               model.addAttribute("showVideo", true);
-               model.addAttribute("errorMsg", null);
-           }
-           else {
-               model.addAttribute("showVideo", false);
-
-               model.addAttribute("errorMsg", "Wrong answer, try again!");
-           }
-
-               Game game = gameService.getGameByGameId(question.getGame().getId());
-
-               List<Question> questions =  game.getQuestionList();
-               List<Question> unansweredQuestions = new ArrayList<>();
-
-               for(Question singleQuestion : game.getQuestionList()){
-                 if (singleQuestion.isAnswered() == false){
-                     unansweredQuestions.add(singleQuestion);
-
-                   }
-               }
-
-               if(unansweredQuestions.size() == 0){
-                   model.addAttribute("gameComplete", true);
-               }
-               else{
-                   model.addAttribute("gameComplete", false);
-
-               }
-
-
-               model.addAttribute("allQuestions", unansweredQuestions);
-               model.addAttribute("currentUser", currentUserName);
-
                processQuestionAnswers(questionId, optionId, model);
 
-               return "index";
+               if(model.containsAttribute("showVideo") && model.getAttribute("showVideo").equals(true)){
+                   Question question = questionService.findQuestionById(questionId);
+                   model.addAttribute("question", question);
+                   return "video-page";
+
+               }else{
+                   return "index";
+               }
+
 
            }
            @RequestMapping("/selectAnswerForGameTwo/{questionId}/{optionId}")
