@@ -6,23 +6,7 @@
 
 <div class="container">
 
-    <div class="row user-stats-row">
-        <div class="row user-info-row">
-            <img th:src="@{/images/user.png}">
-            <div th:text="${currentUser}"></div>
-        </div>
-
-        <div class="row user-info-row">
-            <img th:src="@{/images/coin.png}">
-            <div th:text="'Max score: 50'"></div>
-        </div>
-
-        <div class="row user-info-row">
-            <img th:src="@{/images/danger.png}">
-            <div th:text="'Streaks: 5 days in a row!'"></div>
-        </div>
-
-    </div>
+    <div th:replace="fragments/userinfo :: info"></div>
 
 
     <div th:if="${errorMsg != null}" th:text="${errorMsg}" class="errorMsg"></div>

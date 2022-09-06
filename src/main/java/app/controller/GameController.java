@@ -40,6 +40,7 @@ public class GameController {
     public String getQuestionsForGame(@PathVariable("gameId") int gameId, Model model) {
         Authentication authentication = SecurityContextHolder.getContext().getAuthentication();
         String currentUserName = authentication.getName();
+        User user = userService.loadUserByUsername(currentUserName);
 
         Game game = gameService.getGameByGameId(gameId);
 
@@ -54,6 +55,8 @@ public class GameController {
         model.addAttribute("currentUser", currentUserName);
         model.addAttribute("errorMsg", null);
         model.addAttribute("gameComplete", false);
+        model.addAttribute("currentScore", user.getCurrentGameScore());
+        model.addAttribute("streak",user.getStreaks());
         if (game.getLevel().equalsIgnoreCase("Intermediate")) {
             return "game_two";
         }
@@ -69,10 +72,15 @@ public class GameController {
     public String getHomePage(Model model) {
         Authentication authentication = SecurityContextHolder.getContext().getAuthentication();
         String currentUserName = authentication.getName();
+        User user = userService.loadUserByUsername(currentUserName);
 
         ArrayList<Game> games = (ArrayList<Game>) gameService.getAllGames();
         model.addAttribute("allGames", games);
         model.addAttribute("currentUser", currentUserName);
+        model.addAttribute("currentScore", user.getCurrentGameScore());
+        model.addAttribute("streak",user.getStreaks());
+
+
         return "games";
 
     }
@@ -88,7 +96,7 @@ public class GameController {
 
         if (question.getCorrectOption().equals(selectedOption)) {
             int currentScore = user.getCurrentGameScore();
-            currentScore = currentScore + 1;
+            currentScore = currentScore + 10;
             user.setCurrentGameScore(currentScore);
             userService.save(user);
             question.setAnswered(true);
@@ -101,6 +109,29 @@ public class GameController {
             model.addAttribute("errorMsg", "Wrong answer, try again!");
         }
 
+        Game game = gameService.getGameByGameId(question.getGame().getId());
+        List<Question> questions = game.getQuestionList();
+        List<Question> unansweredQuestions = new ArrayList<>();
+
+        for (Question singleQuestion : questions) {
+            if (singleQuestion.isAnswered() == false) {
+                unansweredQuestions.add(singleQuestion);
+            }
+        }
+
+        if (unansweredQuestions.size() == 0) {
+            model.addAttribute("gameComplete", true);
+        } else {
+            model.addAttribute("gameComplete", false);
+        }
+
+        model.addAttribute("allQuestions", unansweredQuestions);
+        model.addAttribute("currentUser", currentUserName);
+        model.addAttribute("currentScore", user.getCurrentGameScore());
+        model.addAttribute("streak",user.getStreaks());
+
+
+
 
     }
 
@@ -111,6 +142,7 @@ public class GameController {
 
         Authentication authentication = SecurityContextHolder.getContext().getAuthentication();
         String currentUserName = authentication.getName();
+        User user = userService.loadUserByUsername(currentUserName);
 
 
         Game game = gameService.getGameByGameId(question.getGame().getId());
@@ -135,6 +167,10 @@ public class GameController {
 
         model.addAttribute("allQuestions", unansweredQuestions);
         model.addAttribute("currentUser", currentUserName);
+        model.addAttribute("currentScore", user.getCurrentGameScore());
+        model.addAttribute("streak",user.getStreaks());
+
+
 
         return "index";
 

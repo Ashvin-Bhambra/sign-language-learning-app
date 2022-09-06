@@ -5,6 +5,7 @@ import org.springframework.security.core.authority.SimpleGrantedAuthority;
 import org.springframework.security.core.userdetails.UserDetails;
 
 import javax.persistence.*;
+import java.time.LocalDateTime;
 import java.util.Arrays;
 import java.util.Collection;
 
@@ -23,6 +24,10 @@ public class User implements UserDetails {
     private int currentGameScore;
 
     private int maxScore;
+
+    private LocalDateTime lastLogin;
+
+    private int streaks;
 
 
     @Transient
@@ -47,6 +52,8 @@ public class User implements UserDetails {
         this.isEnabled = true;
         this.currentGameScore = 0;
         this.maxScore = 0;
+        this.lastLogin = LocalDateTime.now();
+        this.streaks = 0;
 
     }
 
@@ -59,12 +66,31 @@ public class User implements UserDetails {
         this.isEnabled = true;
         this.currentGameScore = 0;
         this.maxScore = 0;
+        this.lastLogin = LocalDateTime.now();
+        this.streaks = 0;
+
 
     }
 
     @Override
     public Collection<? extends GrantedAuthority> getAuthorities() {
         return Arrays.asList(new SimpleGrantedAuthority(Role.USER.toString()));
+    }
+
+    public LocalDateTime getLastLogin(){
+        return lastLogin;
+    }
+
+    public void setLastLogin(LocalDateTime lastLogin){
+        this.lastLogin = lastLogin;
+    }
+
+    public int getStreaks(){
+        return streaks;
+    }
+
+    public void setStreaks(int streaks){
+        this.streaks = streaks;
     }
 
     public String getPassword() {
