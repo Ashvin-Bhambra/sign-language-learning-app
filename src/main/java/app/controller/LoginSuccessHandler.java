@@ -28,17 +28,8 @@ Authentication authentication) throws IOException
 
 String currentUserName = authentication.getName();
 User user = userService.loadUserByUsername(currentUserName);
-
 user.setCurrentGameScore(0);
-
-long hours = ChronoUnit.HOURS.between(LocalDateTime.now(), user.getLastLogin());
-
-if(hours >= 24 && hours < 48){
-    user.setStreaks(user.getStreaks()+1);
-}
-
-user.setLastLogin(LocalDateTime.now());
-userService.save(user);
+userService.setUserStreaks(user);
 response.sendRedirect("/index");
 
 }

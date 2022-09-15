@@ -13,7 +13,7 @@
     <div th:if="${gameComplete == true}" class="success-wrap">
         <h2>GAME COMPLETE!</h2>
         <img th:src="@{~/images/tick.png}">
-        <a th:href="@{/}" class="custom-button">Go Back</a>
+        <a th:href="@{/index}" class="custom-button">Go Back</a>
     </div>
 
 
@@ -24,9 +24,9 @@
         <div class="word-images">
             <div class="row images-row">
 
-                <div class="video-container">
-                    <div class="text">Video unavailable</div>
-                </div>
+                <video controls width="600" height="400">
+                    <source th:src="${question.videoPath}">
+                </video>
 
 
                 <div class="answer-option" th:each="option : ${question.answerOptions}">

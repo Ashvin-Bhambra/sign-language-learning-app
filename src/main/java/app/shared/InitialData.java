@@ -112,8 +112,8 @@ public class InitialData {
 
 
 
-        Option option1ForGame3 = new Option("I ate an apple", "J'ai mangé une pomme", "/images/apple.png");
-        Option option2ForGame3 = new Option("I bought an apple", "J'ai acheté une pomme", "/images/apple.png");
+        Option option1ForGame3 = new Option("I eat an apple", "J'ai mange une pomme", "/images/apple.png");
+        Option option2ForGame3 = new Option("I buy an apple", "j'achète une pomme", "/images/apple.png");
         Option option3ForGame3 = new Option("I like apples", "J'aime les pommes", "/images/apple.png");
 
         Option option4ForGame3 = new Option("I ride a horse", "Je monte à cheval", "/images/apple.png");
@@ -121,14 +121,14 @@ public class InitialData {
         Option option6ForGame3 = new Option("I love horses", "J'aime les chevaux", "/images/apple.png");
 
         Option option7ForGame3 = new Option("I drive a car", "Je conduis une voiture", "/images/apple.png");
-        Option option8ForGame3 = new Option("I stole a car", "J'ai volé une voiture", "/images/apple.png");
-        Option option9ForGame3 = new Option("I damaged a car", "J'ai endommagé une voiture", "/images/apple.png");
+        Option option8ForGame3 = new Option("I steal a car", "je vole une voiture", "/images/apple.png");
+        Option option9ForGame3 = new Option("I damage a car", "J'endommage une voiture", "/images/apple.png");
 
 
 
-        Question questionOneGameThree = new Question("Pick a sentence based on the video", optionsForGameThreeQuesitonOne, option1ForGame3, "/videos/APPLE.mov");
-        Question questionTwoGameThree = new Question("Pick a sentence based on the video", optionsForGameThreeQuesitonTwo, option4ForGame3, "/videos/APPLE.mov");
-        Question questionThreeGameThree = new Question("Pick a sentence based on the video", optionsForGameThreeQuesitonThree, option7ForGame3, "/videos/APPLE.mov");
+        Question questionOneGameThree = new Question("Pick a sentence based on the video", optionsForGameThreeQuesitonOne, option1ForGame3, "/videos/eat-apple.mp4");
+        Question questionTwoGameThree = new Question("Pick a sentence based on the video", optionsForGameThreeQuesitonTwo, option4ForGame3, "/videos/ride-horse.mp4");
+        Question questionThreeGameThree = new Question("Pick a sentence based on the video", optionsForGameThreeQuesitonThree, option7ForGame3, "/videos/drive-car.mp4");
 
 
 
@@ -171,13 +171,6 @@ public class InitialData {
         questionService.saveQuestion(questionTwoGameThree);
         questionService.saveQuestion(questionThreeGameThree);
 
-
-        User user = new User("test@gmail.com", passwordEncoder.encode("pass"));
-
-        try {
-            userRepository.save(user);
-        } catch (Exception ex) {
-        }
 
     }
 

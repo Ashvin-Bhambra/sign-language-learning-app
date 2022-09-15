@@ -1,0 +1,24 @@
+<!DOCTYPE html>
+<html lang="en" xmlns:th="http://www.w3.org/1999/xhtml">
+<head th:replace="fragments/header :: head">
+</head>
+<body>
+
+<div class="container">
+
+    <form th:action="@{/registerUser}" class="'reg-form">
+        <h2 class="form-header">Register as a new user</h2>
+        <input type="email" placeholder="Input your email" name="username" class="input-controls">
+        <input type="password" placeholder="Input your password" name="password" class="input-controls">
+        <input type="submit" value="Register" class="input-controls submit-btn">
+    </form>
+
+    <div>
+        <p>Already a user?</p>
+        <a th:href="@{/login}">Log in </a>
+    </div>
+
+</div>
+
+</body>
+</html>

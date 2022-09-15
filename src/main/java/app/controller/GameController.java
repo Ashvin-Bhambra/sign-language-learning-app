@@ -11,10 +11,12 @@ import app.service.UserService;
 import org.springframework.security.core.Authentication;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.security.core.context.SecurityContextHolder;
+import org.springframework.security.crypto.password.PasswordEncoder;
 import org.springframework.stereotype.Controller;
 import org.springframework.ui.Model;
 import org.springframework.web.bind.annotation.PathVariable;
 import org.springframework.web.bind.annotation.RequestMapping;
+import org.springframework.web.bind.annotation.RequestParam;
 
 import java.util.ArrayList;
 import java.util.List;
@@ -34,6 +36,9 @@ public class GameController {
 
     @Autowired
     GameService gameService;
+
+    @Autowired
+    private PasswordEncoder passwordEncoder;
 
 
     @RequestMapping("/showQuestionsForGame/{gameId}")
@@ -68,7 +73,7 @@ public class GameController {
 
     }
 
-    @RequestMapping(value = {"/", "/home", "/index"})
+    @RequestMapping(value = { "/home", "/index"})
     public String getHomePage(Model model) {
         Authentication authentication = SecurityContextHolder.getContext().getAuthentication();
         String currentUserName = authentication.getName();
@@ -88,28 +93,19 @@ public class GameController {
     private void processQuestionAnswers(int questionId, int optionId, Model model) {
         Authentication authentication = SecurityContextHolder.getContext().getAuthentication();
         String currentUserName = authentication.getName();
-
         User user = userService.loadUserByUsername(currentUserName);
 
-        Question question = questionService.findQuestionById(questionId);
-        Option selectedOption = optionService.findOptionById(optionId);
+        boolean questionAnswered = questionService.checkIfQuestionAnswered(user, questionId, optionId);
 
-        if (question.getCorrectOption().equals(selectedOption)) {
-            int currentScore = user.getCurrentGameScore();
-            currentScore = currentScore + 10;
-            user.setCurrentGameScore(currentScore);
-            userService.save(user);
-            question.setAnswered(true);
-            questionService.saveQuestion((question));
+        if(questionAnswered){
             model.addAttribute("showVideo", true);
             model.addAttribute("errorMsg", null);
         } else {
             model.addAttribute("showVideo", false);
-
             model.addAttribute("errorMsg", "Wrong answer, try again!");
         }
 
-        Game game = gameService.getGameByGameId(question.getGame().getId());
+        Game game = gameService.getGameByGameId(questionService.findQuestionById(questionId).getGame().getId());
         List<Question> questions = game.getQuestionList();
         List<Question> unansweredQuestions = new ArrayList<>();
 
@@ -128,11 +124,7 @@ public class GameController {
         model.addAttribute("allQuestions", unansweredQuestions);
         model.addAttribute("currentUser", currentUserName);
         model.addAttribute("currentScore", user.getCurrentGameScore());
-        model.addAttribute("streak",user.getStreaks());
-
-
-
-
+        model.addAttribute("streak", user.getStreaks());
     }
 
     @RequestMapping("/resumeGame/{questionId}")
@@ -208,6 +200,18 @@ public class GameController {
                                          Model model){
         processQuestionAnswers(questionId, optionId,model);
         return "game_three";
+    }
+
+    @RequestMapping(value={"/","/showRegistration"})
+    public String showRegistrationPage(){
+        return "registration";
+    }
+
+    @RequestMapping("/registerUser")
+    public String registerUser(@RequestParam("username") String username, @RequestParam("password") String password){
+        User user = new User(username, passwordEncoder.encode(password));
+        userService.save(user);
+        return "redirect:login";
     }
 
 
