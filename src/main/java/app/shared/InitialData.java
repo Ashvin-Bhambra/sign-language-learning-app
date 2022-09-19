@@ -78,9 +78,9 @@ public class InitialData {
 
         Game gameOne = new Game("Easy");
 
-        Question questionOne = new Question("Please click on the apple", optionsForQuestionOne, option1, "/videos/APPLE.mov");
-        Question questionTwo = new Question("Please click on the horse", optionsForQuestionTwo, option5, "/videos/HORSE.mov");
-        Question questionThree = new Question("Please click on the car", optionsForQuestionThree, option9, "/videos/CAR.mov");
+        Question questionOne = new Question("Please click on the apple", optionsForQuestionOne, option1, "/videos/PommeASH.mp4");
+        Question questionTwo = new Question("Please click on the horse", optionsForQuestionTwo, option5, "/videos/ChevalASH.mp4");
+        Question questionThree = new Question("Please click on the car", optionsForQuestionThree, option9, "/videos/AutoAsh.mp4");
 
         ArrayList<Question> questionsForGame1 = new ArrayList<>();
         questionsForGame1.add(questionOne);
