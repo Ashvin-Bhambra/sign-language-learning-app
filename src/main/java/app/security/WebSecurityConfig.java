@@ -50,7 +50,7 @@ return super.authenticationManagerBean();
 protected void configure(HttpSecurity http) throws Exception {
 http
 .authorizeRequests()
-.antMatchers( "/","/login,","/registerUser","/showRegistration","/css/style.css").permitAll()
+.antMatchers( "/","/login,","/registerUser","/register","/css/style.css").permitAll()
 .anyRequest()
 
 .authenticated()

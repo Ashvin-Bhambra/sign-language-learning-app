@@ -76,7 +76,7 @@ public class InitialData {
         saveOptionsFromHashSet(optionsForQuestionTwo);
         saveOptionsFromHashSet(optionsForQuestionThree);
 
-        Game gameOne = new Game("Easy");
+        Game gameOne = new Game("Beginner");
 
         Question questionOne = new Question("Please click on the apple", optionsForQuestionOne, option1, "/videos/PommeASH.mp4");
         Question questionTwo = new Question("Please click on the horse", optionsForQuestionTwo, option5, "/videos/ChevalASH.mp4");

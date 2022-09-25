@@ -29,7 +29,7 @@ public class Game {
     }
 
     public Game() {
-        this.level = "Easy";
+        this.level = "Beginner";
         this.questionList = new ArrayList<>();
     }
 

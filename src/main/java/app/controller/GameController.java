@@ -202,7 +202,7 @@ public class GameController {
         return "game_three";
     }
 
-    @RequestMapping(value={"/","/showRegistration"})
+    @RequestMapping(value={"/","/register"})
     public String showRegistrationPage(){
         return "registration";
     }
